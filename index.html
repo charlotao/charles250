@@ -64,6 +64,19 @@
             transform: translateX(-50%);
             z-index: 0;
         }
+        #quizButton {
+            background-color: #FFD700;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        #quizButton:hover {
+            background-color: #FFC107;
+        }
     </style>
 </head>
 <body>
@@ -77,6 +90,7 @@
                 <li><a href="#recursos">Recursos</a></li>
                 <li><a href="#contato">Contato</a></li>
             </ul>
+            <button id="quizButton" onclick="irParaQuiz()">Quiz Ambiental</button>
         </nav>
     </header>
 
@@ -119,6 +133,41 @@
             </ul>
         </div>
         <a id="linkISO" href="https://www.iso.org/iso-14001-environmental-management.html" target="_blank">Visite o site oficial da ISO 14001</a>
+
+        <!-- Seção do Quiz -->
+        <section id="quiz">
+            <h2>Quiz Ambiental</h2>
+            <p>Teste seus conhecimentos sobre reciclagem e sustentabilidade!</p>
+            
+            <div id="pergunta1">
+                <p>Qual é o item eletrônico que não deve ser descartado no lixo comum?</p>
+                <button onclick="verificarResposta(1, 'incorrecto')">Bateria de celular</button>
+                <button onclick="verificarResposta(1, 'correcto')">Todos os mencionados</button>
+                <button onclick="verificarResposta(1, 'incorrecto')">Monitor</button>
+                <p id="resultadoQuiz1"></p>
+            </div>
+
+            <div id="pergunta2" style="display:none;">
+                <p>Qual destes materiais é reciclável?</p>
+                <button onclick="verificarResposta(2, 'incorrecto')">Papel higiênico usado</button>
+                <button onclick="verificarResposta(2, 'incorrecto')">Guardanapo sujo</button>
+                <button onclick="verificarResposta(2, 'correcto')">Garrafa de vidro</button>
+                <p id="resultadoQuiz2"></p>
+            </div>
+
+            <div id="pergunta3" style="display:none;">
+                <p>Qual é a principal vantagem da reciclagem?</p>
+                <button onclick="verificarResposta(3, 'correcto')">Reduzir a quantidade de lixo nos aterros</button>
+                <button onclick="verificarResposta(3, 'incorrecto')">Aumentar a poluição</button>
+                <button onclick="verificarResposta(3, 'incorrecto')">Desperdiçar recursos naturais</button>
+                <p id="resultadoQuiz3"></p>
+            </div>
+
+            <div id="mensagemFinal" style="display:none;">
+                <h3>Parabéns!</h3>
+                <p>Você completou o quiz e demonstrou seu conhecimento sobre sustentabilidade e reciclagem. Continue aplicando esses conhecimentos no seu dia a dia para contribuir com um futuro mais sustentável!</p>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -129,6 +178,34 @@
         function mostrarInformacoes() {
             var info = document.getElementById('infoDescarte');
             info.style.display = info.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function verificarResposta(pergunta, resposta) {
+            const resultadoQuiz = document.getElementById(`resultadoQuiz${pergunta}`);
+            if (resposta === 'correcto') {
+                resultadoQuiz.innerText = 'Correto!';
+                setTimeout(() => {
+                    if (pergunta < 3) {
+                        document.getElementById(`pergunta${pergunta}`).style.display = 'none';
+                        document.getElementById(`pergunta${pergunta + 1}`).style.display = 'block';
+                    } else {
+                        document.getElementById(`pergunta${pergunta}`).style.display = 'none';
+                        document.getElementById('mensagemFinal').style.display = 'block';
+                    }
+                }, 1000); // Delay para mostrar a mensagem de correção
+            } else {
+                resultadoQuiz.innerText = 'Ops, tente novamente!';
+            }
+        }
+
+        function irParaQuiz() {
+            document.querySelectorAll('section').forEach(sec => sec.style.display = 'none');
+            var quizSection = document.getElementById('quiz');
+            quizSection.style.display = 'block';
+            window.scrollTo({
+                top: quizSection.offsetTop,
+                behavior: "smooth"
+            });
         }
 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
